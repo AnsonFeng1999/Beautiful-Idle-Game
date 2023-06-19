@@ -9141,3 +9141,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 8695043970830274701}
+  turretPrefab: {fileID: 6099218503719323749, guid: 0c43ad4b08590464690c236b9331ac2d, type: 3}
+  turret: {fileID: 1669256521197941081, guid: 0c43ad4b08590464690c236b9331ac2d, type: 3}

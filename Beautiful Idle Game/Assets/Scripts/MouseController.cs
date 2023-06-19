@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class MouseController : MonoBehaviour
 {
     public GameObject cursor;
+    public GameObject turretPrefab;
+    public TurretBehavior turret;
     // Start is called before the first frame update
     // Update is called once per frame
     void LateUpdate()
@@ -20,10 +23,20 @@ public class MouseController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                overlayTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                //overlayTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                turret = Instantiate(turretPrefab).GetComponent<TurretBehavior>();
+                TargetTurretOnTile(overlayTile);
             }
         }
     }
+
+    private void TargetTurretOnTile(GameObject overlayTile)
+    {
+        turret.transform.position = new Vector3(overlayTile.transform.position.x, overlayTile.transform.position.y + 0.0001f, overlayTile.transform.position.z);
+        turret.GetComponent<SpriteRenderer>().sortingOrder = overlayTile.GetComponent<SpriteRenderer>().sortingOrder;
+        turret.overlayTile = overlayTile;
+    }
+
 
     public RaycastHit2D? GetFocusedOnTile()
     {
