@@ -9121,6 +9121,7 @@ GameObject:
   - component: {fileID: 6087690983848593600}
   - component: {fileID: 4516241997230806240}
   - component: {fileID: 8695043970830274702}
+  - component: {fileID: 8695043970830274703}
   m_Layer: 0
   m_Name: Cursor
   m_TagString: Untagged
@@ -9143,3 +9144,18 @@ MonoBehaviour:
   cursor: {fileID: 8695043970830274701}
   turretPrefab: {fileID: 6099218503719323749, guid: 0c43ad4b08590464690c236b9331ac2d, type: 3}
   turret: {fileID: 1669256521197941081, guid: 0c43ad4b08590464690c236b9331ac2d, type: 3}
+--- !u!114 &8695043970830274703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8695043970830274701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db4b0baf04d3ed4992e67a3b156f6d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponPrefabs:
+  - {fileID: 6099218503719323749, guid: 0c43ad4b08590464690c236b9331ac2d, type: 3}
+  - {fileID: 0}

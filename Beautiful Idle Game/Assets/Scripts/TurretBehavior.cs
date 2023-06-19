@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurretBehavior : MonoBehaviour
 {
-    public GameObject overlayTile;
+    //public GameObject overlayTile;
     // Start is called before the first frame update
     void Start()
     {
