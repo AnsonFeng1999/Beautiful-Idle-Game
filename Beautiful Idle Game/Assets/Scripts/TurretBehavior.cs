@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class TurretBehavior : MonoBehaviour
 {
-    //public GameObject overlayTile;
+    [Header("Turret Attribute")]
+    public int strength;
+    public int range;
+    public int level;
+    public int type; // Type of turret, the same as index of the prefab list atm.
+    public float price;
+    public OverlayTile mountLocation;
+
     // Start is called before the first frame update
     void Start()
     {

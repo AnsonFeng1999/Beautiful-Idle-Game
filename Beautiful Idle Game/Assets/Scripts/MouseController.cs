@@ -7,11 +7,14 @@ using UnityEngine.TextCore.Text;
 
 public class MouseController : MonoBehaviour
 {
+    [Header("Reference")]
     public GameObject cursor;
+    [SerializeField] public OverlayTile overlayTile;
+
+    [Header("Building Management")]
     public Boolean isMounting;
     public int towerIndex;
     
-    // Start is called before the first frame update
     // Update is called once per frame
     void LateUpdate()
     {
@@ -19,17 +22,22 @@ public class MouseController : MonoBehaviour
 
         if (hit.HasValue)
         {
-            GameObject overlayTile = hit.Value.collider.gameObject;
+            overlayTile = hit.Value.collider.gameObject.GetComponent<OverlayTile>();
             cursor.transform.position = overlayTile.transform.position;
             cursor.GetComponent<SpriteRenderer>().sortingOrder = overlayTile.GetComponent<SpriteRenderer>().sortingOrder;
-
-            if (Input.GetMouseButtonDown(0))
+            
+            if (isMounting)
+            {
+                // show range of turrets
+            }
+            
+            if (isMounting && Input.GetMouseButtonDown(0))
+            {
+                GetComponent<WeaponBuildManager>().MountWeapons(towerIndex, overlayTile);
+            }
+            else if (Input.GetMouseButtonDown(0))
             {
                 overlayTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-                if (isMounting)
-                {
-                    GetComponent<WeaponBuildManager>().MountWeapons(towerIndex, overlayTile);
-                }
             }
         }
     }

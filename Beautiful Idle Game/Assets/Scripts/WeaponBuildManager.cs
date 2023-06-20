@@ -6,7 +6,7 @@ public class WeaponBuildManager : MonoBehaviour
 {
     public GameObject[] weaponPrefabs;
     
-    public void MountWeapons(int towerIndex, GameObject overlayTile)
+    public void MountWeapons(int towerIndex, OverlayTile overlayTile)
     {
         GameObject turret = Instantiate(weaponPrefabs[towerIndex]);
         turret.transform.position = new Vector3(overlayTile.transform.position.x,

@@ -12,7 +12,7 @@ public class MapManager : MonoBehaviour
     public GameObject overlayContainer;
     
 
-    public Dictionary<Vector2Int, GameObject> map = new();
+    public Dictionary<Vector2Int, OverlayTile> map = new();
     
     // public bool ignoreBottomTiles;
 
@@ -47,7 +47,7 @@ public class MapManager : MonoBehaviour
                             overlayTile.transform.position = new Vector3(cellWorldPosition.x, cellWorldPosition.y, cellWorldPosition.z+1);
                             overlayTile.GetComponent<SpriteRenderer>().sortingOrder = tileMap.GetComponent<TilemapRenderer>().sortingOrder;
                             overlay.gridLocation = tileLocation;
-                            map.Add(tileKey, overlayTile);
+                            map.Add(tileKey, overlay);
                         }
                     }
                 }
@@ -55,5 +55,39 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
+    public List<OverlayTile> GetSurroundingTiles(Vector2Int originTile)
+    {
+        var surroundingTiles = new List<OverlayTile>();
+
+
+        Vector2Int TileToCheck = new Vector2Int(originTile.x + 1, originTile.y);
+        if (map.ContainsKey(TileToCheck))
+        {
+            if (Mathf.Abs(map[TileToCheck].transform.position.z - map[originTile].transform.position.z) <= 1)
+                surroundingTiles.Add(map[TileToCheck]);
+        }
+
+        TileToCheck = new Vector2Int(originTile.x - 1, originTile.y);
+        if (map.ContainsKey(TileToCheck))
+        {
+            if (Mathf.Abs(map[TileToCheck].transform.position.z - map[originTile].transform.position.z) <= 1)
+                surroundingTiles.Add(map[TileToCheck]);
+        }
+
+        TileToCheck = new Vector2Int(originTile.x, originTile.y + 1);
+        if (map.ContainsKey(TileToCheck))
+        {
+            if (Mathf.Abs(map[TileToCheck].transform.position.z - map[originTile].transform.position.z) <= 1)
+                surroundingTiles.Add(map[TileToCheck]);
+        }
+
+        TileToCheck = new Vector2Int(originTile.x, originTile.y - 1);
+        if (map.ContainsKey(TileToCheck))
+        {
+            if (Mathf.Abs(map[TileToCheck].transform.position.z - map[originTile].transform.position.z) <= 1)
+                surroundingTiles.Add(map[TileToCheck]);
+        }
+
+        return surroundingTiles;
+    }
 }
