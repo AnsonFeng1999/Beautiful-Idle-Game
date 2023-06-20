@@ -27107,7 +27107,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 8695043970830274701}
-  isMounting: 0
+  overlayTile: {fileID: 0}
+  mapManager: {fileID: 0}
+  weaponBuildManager: {fileID: 0}
+  isMounting: 1
   towerIndex: 0
 --- !u!114 &8695043970830274703
 MonoBehaviour:
