@@ -18,9 +18,6 @@ public class OverlayTile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        }
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
     }
 }

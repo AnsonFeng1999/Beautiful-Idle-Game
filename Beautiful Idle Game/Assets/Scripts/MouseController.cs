@@ -4,17 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using UnityEngine.Tilemaps;
 
 public class MouseController : MonoBehaviour
 {
     [Header("Reference")]
     public GameObject cursor;
     [SerializeField] public OverlayTile overlayTile;
+    [SerializeField] private MapManager mapManager;
+    [SerializeField] private WeaponBuildManager weaponBuildManager;
 
     [Header("Building Management")]
     public Boolean isMounting;
     public int towerIndex;
-    
+
+    void Start()
+    {
+        mapManager = MapManager.Instance;
+        weaponBuildManager = GetComponent<WeaponBuildManager>();
+    }
+
     // Update is called once per frame
     void LateUpdate()
     {
@@ -25,20 +34,21 @@ public class MouseController : MonoBehaviour
             overlayTile = hit.Value.collider.gameObject.GetComponent<OverlayTile>();
             cursor.transform.position = overlayTile.transform.position;
             cursor.GetComponent<SpriteRenderer>().sortingOrder = overlayTile.GetComponent<SpriteRenderer>().sortingOrder;
-            
+
             if (isMounting)
             {
-                // show range of turrets
+                TurretRangeShow(overlayTile, towerIndex, 1);
             }
             
             if (isMounting && Input.GetMouseButtonDown(0))
             {
-                GetComponent<WeaponBuildManager>().MountWeapons(towerIndex, overlayTile);
+                weaponBuildManager.MountWeapons(towerIndex, overlayTile);
+                isMounting = false;
             }
-            else if (Input.GetMouseButtonDown(0))
-            {
-                overlayTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-            }
+            //else if (Input.GetMouseButtonDown(0))
+            //{
+            //    overlayTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            //}
         }
     }
 
@@ -58,5 +68,15 @@ public class MouseController : MonoBehaviour
         }
 
         return null;
+    }
+
+    private void TurretRangeShow(OverlayTile overlayTile, int towerIndex, float alpha)
+    {
+        var currentTurret = weaponBuildManager.weaponPrefabs[towerIndex].gameObject.GetComponent<TurretBehavior>();
+        Vector2Int currGrid = new(overlayTile.gridLocation.x, overlayTile.gridLocation.y);
+        foreach (OverlayTile tile in mapManager.GetTilesInRange(currGrid, currentTurret.range))
+        {
+            tile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
+        }
     }
 }
