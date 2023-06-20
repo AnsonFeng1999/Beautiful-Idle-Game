@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -55,6 +56,8 @@ public class MapManager : MonoBehaviour
         }
     }
 
+
+    // Getting tiles in 4 directions
     public List<OverlayTile> GetSurroundingTiles(Vector2Int originTile)
     {
         var surroundingTiles = new List<OverlayTile>();
@@ -89,5 +92,52 @@ public class MapManager : MonoBehaviour
         }
 
         return surroundingTiles;
+    }
+
+    public List<OverlayTile> GetTilesInRange(Vector2Int originTile, int range)
+    {
+        OverlayTile originTileLocation = map[originTile];
+        var tileInRange = new List<OverlayTile>();
+        int breath = 0;
+
+        tileInRange.Add(originTileLocation);
+
+        var queue = new Queue<OverlayTile>();
+        queue.Enqueue(originTileLocation);
+        while (breath < range)
+        {
+            // A list to store adjacentTiles
+            var adjacentTiles = new List<OverlayTile>();
+
+            // Pop the queue until it's empty
+            while (queue.Count > 0)
+            {
+                // Tile pop from the queue, then find adjacent tiles of it.
+                OverlayTile currentTile = queue.Dequeue();
+                List<OverlayTile> temp = GetSurroundingTiles(new Vector2Int(currentTile.gridLocation.x, currentTile.gridLocation.y));
+                // "temp" might contains tiles already visited, we only need add non-visited tiles
+                foreach (var tile in temp)
+                {
+                    if (!tileInRange.Contains(tile))
+                    {
+                        adjacentTiles.Add(tile);
+                    }
+                }
+                temp.Clear();
+            }
+
+            // Remove duplicates
+            adjacentTiles = adjacentTiles.Distinct().ToList();
+
+            // Once we find all adjacent tiles of tiles in the queue(now the queue is empty),
+            // we add them to the result list
+            tileInRange.AddRange(adjacentTiles);
+
+            // Then we push them into the queue for the next breath and clear current list.
+            adjacentTiles.ForEach(tile => queue.Enqueue(tile));
+            adjacentTiles.Clear();
+            breath++;
+        }
+        return tileInRange;
     }
 }
