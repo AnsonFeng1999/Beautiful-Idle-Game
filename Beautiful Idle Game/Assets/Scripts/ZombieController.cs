@@ -13,7 +13,7 @@ public class ZombieController : MonoBehaviour
     private List<OverlayTile> path = new();
     private IsometricCharacterRenderer isoRenderer;
     
-    private Vector2Int GetRandomKey(Dictionary<Vector2Int, GameObject> dict)
+    private Vector2Int GetRandomKey(Dictionary<Vector2Int, OverlayTile> dict)
     {
         System.Random random = new System.Random();
         int randomIndex = random.Next(0, dict.Count);

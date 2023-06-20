@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         
         // randomly spawn Zombies
         
-        foreach (KeyValuePair<Vector2Int,GameObject> pair in mapKey)
+        foreach (KeyValuePair<Vector2Int,OverlayTile> pair in mapKey)
         {
             // randomly spawn a zombie for each tile with
             if (Random.value <= 0.05f)
