@@ -5,13 +5,18 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
+    [Header("Enemy Path Behavior")]
     public OverlayTile currentOverlay;
     [SerializeField]
-    private float speed = 4.0f;
     private PathFinder _pathFinder;
     private OverlayTile _target;
     private List<OverlayTile> path = new();
     private IsometricCharacterRenderer isoRenderer;
+
+    [Header("Enemy Attribute")]
+    public float speed = 4.0f;
+    public float reward = 10f;
+    [SerializeField] private float health = 2f;
     
     private Vector2Int GetRandomKey(Dictionary<Vector2Int, OverlayTile> dict)
     {
@@ -23,7 +28,11 @@ public class ZombieController : MonoBehaviour
     public void PositionCharacter(OverlayTile tile, bool start)
     {
         if (currentOverlay == tile) return;
-        if (currentOverlay != null) { currentOverlay.isBlocked = false; }
+        if (currentOverlay != null) 
+        { 
+            currentOverlay.isBlocked = false;
+            currentOverlay.enemyOn = false;
+        }
         
         tile.isBlocked = !start;
         var position = tile.transform.position;
@@ -65,6 +74,11 @@ public class ZombieController : MonoBehaviour
         {
             MoveAlongPath();
         }
+
+        if (currentOverlay.beingShot)
+        {
+            DecreaseHealth(currentOverlay.damageOnThisTile);
+        }
     }
 
     private void MoveAlongPath()
@@ -83,5 +97,17 @@ public class ZombieController : MonoBehaviour
             path.RemoveAt(0);
         }
     }
-    
+
+    private void DecreaseHealth(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            path.Clear();
+            GameManager.Instance.currency += reward;
+            currentOverlay.enemyOn = false;
+            currentOverlay.isBlocked = false;
+            Destroy(gameObject);
+        }
+    }
 }

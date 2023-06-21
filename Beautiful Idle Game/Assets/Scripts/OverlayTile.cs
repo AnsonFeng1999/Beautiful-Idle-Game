@@ -25,5 +25,6 @@ public class OverlayTile : MonoBehaviour
     void Update()
     {
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        if (!enemyOn) { beingShot = false; }
     }
 }

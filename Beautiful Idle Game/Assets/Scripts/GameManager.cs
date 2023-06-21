@@ -5,8 +5,17 @@ using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
+    private static GameManager instance;
+    public static GameManager Instance { get { return instance; } }
+
     public GameObject ZombiePrefab;
-    
+    public float currency;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
