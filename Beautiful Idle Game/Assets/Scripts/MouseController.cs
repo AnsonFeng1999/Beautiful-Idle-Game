@@ -45,10 +45,6 @@ public class MouseController : MonoBehaviour
                 weaponBuildManager.MountWeapons(towerIndex, overlayTile);
                 isMounting = false;
             }
-            //else if (Input.GetMouseButtonDown(0))
-            //{
-            //    overlayTile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-            //}
         }
     }
 

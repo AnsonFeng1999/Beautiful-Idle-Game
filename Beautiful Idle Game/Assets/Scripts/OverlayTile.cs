@@ -13,11 +13,14 @@ public class OverlayTile : MonoBehaviour
         get { return G + H; }
     }
 
-    [Header("Turret Attribute")]
+    [Header("Tile Attribute")]
     public bool isBlocked;
     public bool enemyOn;
+    public bool beingShot;
+    public float damageOnThisTile;
     public OverlayTile previous;
     public Vector3Int gridLocation;
+
     // Update is called once per frame
     void Update()
     {
