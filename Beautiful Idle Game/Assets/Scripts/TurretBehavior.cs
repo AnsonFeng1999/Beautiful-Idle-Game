@@ -12,10 +12,17 @@ public class TurretBehavior : MonoBehaviour
     public float price;
     public OverlayTile mountLocation;
 
-    // Start is called before the first frame update
-    void Start()
+    private List<OverlayTile> tilesInRange;
+
+    //// Start is called before the first frame update
+    //void Start()
+    //{
+
+    //}
+    void Awake()
     {
-        
+        Vector2Int mountLocaVec = new(mountLocation.gridLocation.x, mountLocation.gridLocation.y);
+        tilesInRange = MapManager.Instance.GetTilesInRange(mountLocaVec, range);
     }
 
     // Update is called once per frame

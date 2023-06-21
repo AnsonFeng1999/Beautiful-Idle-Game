@@ -30,6 +30,7 @@ public class ZombieController : MonoBehaviour
         transform.position = new Vector3(position.x, position.y + 0.0001f, position.z);
         GetComponentInChildren<SpriteRenderer>().sortingOrder = tile.GetComponent<SpriteRenderer>().sortingOrder;
         currentOverlay = tile;
+        tile.enemyOn = true;
         
         if (start)
         {

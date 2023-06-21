@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class OverlayTile : MonoBehaviour
 {
+    [Header("Manhatten Attribute")]
     public int G;
     public int H;
     
@@ -12,7 +13,9 @@ public class OverlayTile : MonoBehaviour
         get { return G + H; }
     }
 
+    [Header("Turret Attribute")]
     public bool isBlocked;
+    public bool enemyOn;
     public OverlayTile previous;
     public Vector3Int gridLocation;
     // Update is called once per frame
