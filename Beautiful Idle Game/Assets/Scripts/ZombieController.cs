@@ -57,6 +57,7 @@ public class ZombieController : MonoBehaviour
     void Update()
     {
         // every
+        GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1);
         if (path.Count == 0)
         {
             // pick a random location on the map
@@ -101,6 +102,7 @@ public class ZombieController : MonoBehaviour
     private void DecreaseHealth(float damage)
     {
         health -= damage;
+        GetComponentInChildren<SpriteRenderer>().color = new Color(1, .2f, .2f);
         if (health <= 0)
         {
             path.Clear();
