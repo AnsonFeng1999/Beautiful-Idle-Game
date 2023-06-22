@@ -14,8 +14,8 @@ public class ZombieController : MonoBehaviour
     private IsometricCharacterRenderer isoRenderer;
 
     [Header("Enemy Attribute")]
-    public float speed = 4.0f;
-    public float reward = 10f;
+    [SerializeField] private float speed = 4.0f;
+    [SerializeField] private float reward = 10f;
     [SerializeField] private float health = 2f;
     
     private Vector2Int GetRandomKey(Dictionary<Vector2Int, OverlayTile> dict)

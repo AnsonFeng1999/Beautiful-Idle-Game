@@ -27404,6 +27404,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1653471647}
     m_Modifications:
+    - target: {fileID: 1762673184477055340, guid: d38dbc2035508514e876c244eaaa1774, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2e2e4e9c3e34d2a48b10aed5a5d28c42, type: 3}
     - target: {fileID: 1762673184654490766, guid: d38dbc2035508514e876c244eaaa1774, type: 3}
       propertyPath: m_text
       value: $150
@@ -28205,4 +28209,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefabs:
   - {fileID: 6099218503719323749, guid: 0c43ad4b08590464690c236b9331ac2d, type: 3}
-  - {fileID: 0}
+  - {fileID: 7251230189386302836, guid: 1b499bdae531be84b97bf9443616e153, type: 3}
