@@ -48,10 +48,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   range: 2
-  level: 0
   type: 0
-  price: 100
+  price: 20
   mountLocation: {fileID: 0}
+  level: 0
+  slowEffect: 0
   target: {fileID: 0}
   turretCoolDown: 1
   turretHeat: 0

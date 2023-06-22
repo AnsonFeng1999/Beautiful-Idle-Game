@@ -49,7 +49,7 @@ MonoBehaviour:
   damage: 1
   range: 1
   type: 1
-  price: 150
+  price: 40
   mountLocation: {fileID: 0}
   level: 0
   slowEffect: 1

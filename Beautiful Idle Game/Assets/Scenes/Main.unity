@@ -27410,7 +27410,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 2e2e4e9c3e34d2a48b10aed5a5d28c42, type: 3}
     - target: {fileID: 1762673184654490766, guid: d38dbc2035508514e876c244eaaa1774, type: 3}
       propertyPath: m_text
-      value: $150
+      value: $40
       objectReference: {fileID: 0}
     - target: {fileID: 1762673185431969369, guid: d38dbc2035508514e876c244eaaa1774, type: 3}
       propertyPath: m_Name
@@ -27995,7 +27995,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1762673184654490766, guid: d38dbc2035508514e876c244eaaa1774, type: 3}
       propertyPath: m_text
-      value: $100
+      value: $20
       objectReference: {fileID: 0}
     - target: {fileID: 1762673185431969369, guid: d38dbc2035508514e876c244eaaa1774, type: 3}
       propertyPath: m_Name
