@@ -81,7 +81,7 @@ public class MouseController : MonoBehaviour
 
     private void TurretRangeShow(OverlayTile overlayTile, int towerIndex, float alpha)
     {
-        var currentTurret = weaponBuildManager.weaponPrefabs[towerIndex].gameObject.GetComponent<TurretBehavior>();
+        var currentTurret = weaponBuildManager.weaponPrefabs[towerIndex].GetComponent<TurretBehavior>();
         Vector2Int currGrid = new(overlayTile.gridLocation.x, overlayTile.gridLocation.y);
         foreach (OverlayTile tile in mapManager.GetTilesInRange(currGrid, currentTurret.range))
         {

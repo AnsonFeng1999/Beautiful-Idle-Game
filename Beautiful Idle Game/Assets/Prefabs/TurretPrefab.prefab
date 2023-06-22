@@ -50,11 +50,11 @@ MonoBehaviour:
   range: 2
   level: 0
   type: 0
-  price: 20
+  price: 100
   mountLocation: {fileID: 0}
   target: {fileID: 0}
   turretCoolDown: 1
-  gunHeat: 0
+  turretHeat: 0
 --- !u!212 &5794342434390801834
 SpriteRenderer:
   m_ObjectHideFlags: 0

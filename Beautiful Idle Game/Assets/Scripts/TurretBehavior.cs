@@ -7,10 +7,12 @@ public class TurretBehavior : MonoBehaviour
     [Header("Turret Attribute")]
     public float damage;
     public int range;
-    public int level;
     public int type; // Type of turret, the same as index of the prefab list atm.
     public float price;
     public OverlayTile mountLocation;
+    
+    [SerializeField] private int level;
+    [SerializeField] private bool slowEffect;
     private List<OverlayTile> tilesInRange;
     [SerializeField] private OverlayTile target;
     [SerializeField] private float turretCoolDown;
@@ -36,6 +38,7 @@ public class TurretBehavior : MonoBehaviour
             if (!target.enemyOn)
             {
                 target.beingShot = false;
+                target.shouldSlowed = false;
                 target = null;
             }
             else if (turretHeat <= 0)
@@ -67,7 +70,9 @@ public class TurretBehavior : MonoBehaviour
         {
             target.damageOnThisTile += damage;
             target.beingShot = true;
+            target.shouldSlowed = slowEffect;
             turretHeat = turretCoolDown;
+            
         }        
     }
 }

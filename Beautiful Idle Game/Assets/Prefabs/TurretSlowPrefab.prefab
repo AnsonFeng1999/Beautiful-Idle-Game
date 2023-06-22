@@ -48,13 +48,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   range: 1
-  level: 0
   type: 1
-  price: 20
+  price: 150
   mountLocation: {fileID: 0}
+  level: 0
+  slowEffect: 1
   target: {fileID: 0}
   turretCoolDown: 2
-  gunHeat: 0
+  turretHeat: 0
 --- !u!212 &6948190166927175867
 SpriteRenderer:
   m_ObjectHideFlags: 0
