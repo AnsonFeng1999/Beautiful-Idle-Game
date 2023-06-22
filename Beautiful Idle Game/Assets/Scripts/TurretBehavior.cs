@@ -13,17 +13,24 @@ public class TurretBehavior : MonoBehaviour
     public OverlayTile mountLocation;
     private List<OverlayTile> tilesInRange;
     [SerializeField] private OverlayTile target;
+    private float turretCoolDown;
 
     void Start()
     {
         Vector2Int mountLocaVec = new(mountLocation.gridLocation.x, mountLocation.gridLocation.y);
         tilesInRange = MapManager.Instance.GetTilesInRange(mountLocaVec, range);
         foreach (var tile in tilesInRange) { tile.damageOnThisTile += damage; }
+        turretCoolDown = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (turretCoolDown > 0f)
+        {
+            turretCoolDown -= Time.deltaTime;
+        }
+
         if (target)
         {
             if (!target.enemyOn)
@@ -31,14 +38,14 @@ public class TurretBehavior : MonoBehaviour
                 target.beingShot = false;
                 target = null;
             }
-            else
+            else if (turretCoolDown <= 0)
             {
                 // Play firing animation if not playing
                 // face towards the tile
                 WeaponAttack();
             }
         }
-        else if (!target)
+        else
         {
             target = FindTarget();
             // if (animator.isPlaying()) {Stop playing animation}
@@ -56,6 +63,10 @@ public class TurretBehavior : MonoBehaviour
 
     private void WeaponAttack()
     {
-        target.beingShot = true;
+        if (turretCoolDown <= 0f)
+        {
+            target.beingShot = true;
+            turretCoolDown = 1f;
+        }        
     }
 }

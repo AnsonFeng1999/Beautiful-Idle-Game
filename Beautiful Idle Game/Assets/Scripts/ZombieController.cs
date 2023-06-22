@@ -57,7 +57,7 @@ public class ZombieController : MonoBehaviour
     void Update()
     {
         // every
-        GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1);
+        //GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1);
         if (path.Count == 0)
         {
             // pick a random location on the map
@@ -102,7 +102,9 @@ public class ZombieController : MonoBehaviour
     private void DecreaseHealth(float damage)
     {
         health -= damage;
-        GetComponentInChildren<SpriteRenderer>().color = new Color(1, .2f, .2f);
+        currentOverlay.beingShot = false;
+        StartCoroutine(TurnRed());
+        
         if (health <= 0)
         {
             path.Clear();
@@ -110,6 +112,16 @@ public class ZombieController : MonoBehaviour
             currentOverlay.enemyOn = false;
             currentOverlay.isBlocked = false;
             Destroy(gameObject);
+        }
+    }
+
+    private IEnumerator TurnRed()
+    {
+        GetComponentInChildren<SpriteRenderer>().color = new Color(1, 0.1f, 0.1f);
+        for (float i = 0.1f; i < 1f; i += 0.2f)
+        {
+            GetComponentInChildren<SpriteRenderer>().color = new Color(1, i, i);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
