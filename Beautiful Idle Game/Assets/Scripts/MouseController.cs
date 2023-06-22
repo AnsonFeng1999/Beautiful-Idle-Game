@@ -34,7 +34,9 @@ public class MouseController : MonoBehaviour
             overlayTile = hit.Value.collider.gameObject.GetComponent<OverlayTile>();
             cursor.transform.position = overlayTile.transform.position;
             cursor.GetComponent<SpriteRenderer>().sortingOrder = overlayTile.GetComponent<SpriteRenderer>().sortingOrder;
-
+            
+            #region Mounting
+            
             if (isMounting)
             {
                 TurretRangeShow(overlayTile, towerIndex, 1);
@@ -45,6 +47,17 @@ public class MouseController : MonoBehaviour
                 weaponBuildManager.MountWeapons(towerIndex, overlayTile);
                 isMounting = false;
             }
+
+            #endregion
+
+            #region Hovering
+            
+            if (overlayTile.turret)
+            {
+                TurretRangeShow(overlayTile, overlayTile.turret.type, 1);
+            }
+            
+            #endregion
         }
     }
 
@@ -74,5 +87,11 @@ public class MouseController : MonoBehaviour
         {
             tile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
         }
+    }
+
+    public void SetIsMountingAndIndex(int _index)
+    {
+        isMounting = true;
+        towerIndex = _index;
     }
 }

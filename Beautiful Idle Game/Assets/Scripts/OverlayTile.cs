@@ -21,6 +21,9 @@ public class OverlayTile : MonoBehaviour
     public OverlayTile previous;
     public Vector3Int gridLocation;
 
+    [Header("Reference")]
+    public TurretBehavior turret;
+
     // Update is called once per frame
     void Update()
     {

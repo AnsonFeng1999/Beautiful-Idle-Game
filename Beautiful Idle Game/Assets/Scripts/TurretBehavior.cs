@@ -19,7 +19,6 @@ public class TurretBehavior : MonoBehaviour
     {
         Vector2Int mountLocaVec = new(mountLocation.gridLocation.x, mountLocation.gridLocation.y);
         tilesInRange = MapManager.Instance.GetTilesInRange(mountLocaVec, range);
-        foreach (var tile in tilesInRange) { tile.damageOnThisTile += damage; }
         turretCoolDown = 0f;
     }
 
@@ -65,6 +64,7 @@ public class TurretBehavior : MonoBehaviour
     {
         if (turretCoolDown <= 0f)
         {
+            target.damageOnThisTile += damage;
             target.beingShot = true;
             turretCoolDown = 1f;
         }        

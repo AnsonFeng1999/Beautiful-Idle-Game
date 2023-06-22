@@ -102,6 +102,7 @@ public class ZombieController : MonoBehaviour
     private void DecreaseHealth(float damage)
     {
         health -= damage;
+        currentOverlay.damageOnThisTile -= damage;
         currentOverlay.beingShot = false;
         StartCoroutine(TurnRed());
         

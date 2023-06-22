@@ -15,5 +15,6 @@ public class WeaponBuildManager : MonoBehaviour
         turret.gameObject.GetComponent<SpriteRenderer>().sortingOrder = overlayTile.gameObject.GetComponent<SpriteRenderer>().sortingOrder;
         turret.gameObject.GetComponent<TurretBehavior>().mountLocation = overlayTile;
         overlayTile.isBlocked = true;
+        overlayTile.turret = turret.gameObject.GetComponent<TurretBehavior>();
     }
 }
