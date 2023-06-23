@@ -15,18 +15,13 @@ public class WeaponBuildManager : MonoBehaviour
         }
 
         GameObject turret = Instantiate(weaponPrefabs[towerIndex]);
-        turret.GetComponent<TurretBehavior>().WeaponBuild(overlayTile);
+        turret.transform.position = new Vector3(overlayTile.transform.position.x,
+                                                overlayTile.transform.position.y + 0.0001f,
+                                                overlayTile.transform.position.z);
+        turret.GetComponent<SpriteRenderer>().sortingOrder = overlayTile.gameObject.GetComponent<SpriteRenderer>().sortingOrder;
+        turret.GetComponent<TurretBehavior>().mountLocation = overlayTile;
+        overlayTile.isBlocked = true;
+        overlayTile.turret = turret.GetComponent<TurretBehavior>();
         GameManager.Instance.currency -= turret.GetComponent<TurretBehavior>().price;
-    }
-
-    public void RemoveWeapons(OverlayTile overlayTile)
-    {
-        if (overlayTile.turret)
-        {
-            GameObject turret = overlayTile.turret.gameObject;
-            turret.GetComponent<TurretBehavior>().WeaponRemove(overlayTile);
-            GameManager.Instance.currency += turret.GetComponent<TurretBehavior>().price;
-            Destroy(turret);
-        }
     }
 }
