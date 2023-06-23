@@ -259,3 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentOverlay: {fileID: 0}
   speed: 1
+  normalSpeed: 0
+  reward: 10
+  health: 5
+  slowTime: 5

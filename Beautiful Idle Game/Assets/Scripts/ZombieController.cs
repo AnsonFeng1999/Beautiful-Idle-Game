@@ -5,15 +5,24 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
+    [Header("Enemy Path Behavior")]
     public OverlayTile currentOverlay;
     [SerializeField]
-    private float speed = 4.0f;
     private PathFinder _pathFinder;
     private OverlayTile _target;
     private List<OverlayTile> path = new();
     private IsometricCharacterRenderer isoRenderer;
+
+    [Header("Enemy Attribute")]
+    [SerializeField] private float speed = 4.0f;
+    [SerializeField] private float normalSpeed; // Serialized for testing now
+    [SerializeField] private float reward = 10f;
+    [SerializeField] private float health = 2f;
+    [SerializeField] private float slowTime;
+    private float slowCountDown;
+
     
-    private Vector2Int GetRandomKey(Dictionary<Vector2Int, GameObject> dict)
+    private Vector2Int GetRandomKey(Dictionary<Vector2Int, OverlayTile> dict)
     {
         System.Random random = new System.Random();
         int randomIndex = random.Next(0, dict.Count);
@@ -23,13 +32,18 @@ public class ZombieController : MonoBehaviour
     public void PositionCharacter(OverlayTile tile, bool start)
     {
         if (currentOverlay == tile) return;
-        if (currentOverlay != null) { currentOverlay.isBlocked = false; }
+        if (currentOverlay != null) 
+        { 
+            currentOverlay.isBlocked = false;
+            currentOverlay.enemyOn = false;
+        }
         
         tile.isBlocked = !start;
         var position = tile.transform.position;
         transform.position = new Vector3(position.x, position.y + 0.0001f, position.z);
         GetComponentInChildren<SpriteRenderer>().sortingOrder = tile.GetComponent<SpriteRenderer>().sortingOrder;
         currentOverlay = tile;
+        tile.enemyOn = true;
         
         if (start)
         {
@@ -41,11 +55,27 @@ public class ZombieController : MonoBehaviour
     {
         _pathFinder = new PathFinder();
         isoRenderer = GetComponentInChildren<IsometricCharacterRenderer>();
+        normalSpeed = speed;
+        slowCountDown = 0f;
     }
     
     // Update is called once per frame
     void Update()
     {
+        #region Slow Effect
+
+        if (slowCountDown > 0)
+        {
+            slowCountDown -= Time.deltaTime;
+        }
+        else
+        {
+            speed = normalSpeed;
+        }
+
+        #endregion
+
+        #region Pathing & Moving
         // every
         if (path.Count == 0)
         {
@@ -64,6 +94,17 @@ public class ZombieController : MonoBehaviour
         {
             MoveAlongPath();
         }
+
+        #endregion
+
+        #region Being Attacked
+
+        if (currentOverlay.beingShot)
+        {
+            DecreaseHealthAndSpeed(currentOverlay.damageOnThisTile, currentOverlay.shouldSlowed);
+        }
+
+        #endregion
     }
 
     private void MoveAlongPath()
@@ -82,5 +123,38 @@ public class ZombieController : MonoBehaviour
             path.RemoveAt(0);
         }
     }
-    
+
+    private void DecreaseHealthAndSpeed(float damage, bool shouldSlowed)
+    {
+        health -= damage;
+        currentOverlay.damageOnThisTile -= damage;
+        currentOverlay.beingShot = false;
+        if (shouldSlowed && slowCountDown <= 0)
+        {
+            speed /= 2;
+            slowCountDown = slowTime;
+            currentOverlay.shouldSlowed = false;
+        }
+        StartCoroutine(TurnRed());
+        
+        // Checking health status
+        if (health <= 0)
+        {
+            path.Clear();
+            GameManager.Instance.currency += reward;
+            currentOverlay.enemyOn = false;
+            currentOverlay.isBlocked = false;
+            Destroy(gameObject);
+        }
+    }
+
+    private IEnumerator TurnRed()
+    {
+        GetComponentInChildren<SpriteRenderer>().color = new Color(1, 0.1f, 0.1f);
+        for (float i = 0.1f; i < 1f; i += 0.2f)
+        {
+            GetComponentInChildren<SpriteRenderer>().color = new Color(1, i, i);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 }
