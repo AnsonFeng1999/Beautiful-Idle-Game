@@ -11,12 +11,12 @@ public class TurretBehavior : MonoBehaviour
     public float price;
     public OverlayTile mountLocation;
     
-    [SerializeField] private int level;
+    private int level;
     [SerializeField] private bool slowEffect;
     private List<OverlayTile> tilesInRange;
-    [SerializeField] private OverlayTile target;
+    [SerializeField] private OverlayTile target;    // Testing
     [SerializeField] private float turretCoolDown;
-    [SerializeField] private float turretHeat;
+    private float turretHeat;
 
     void Start()
     {
@@ -55,6 +55,23 @@ public class TurretBehavior : MonoBehaviour
         }
     }
 
+    public void WeaponBuild(OverlayTile overlayTile)
+    {
+        transform.position = new Vector3(overlayTile.transform.position.x,
+                                         overlayTile.transform.position.y + 0.0001f,
+                                         overlayTile.transform.position.z);
+        GetComponent<SpriteRenderer>().sortingOrder = overlayTile.gameObject.GetComponent<SpriteRenderer>().sortingOrder;
+        mountLocation = overlayTile;
+        overlayTile.isBlocked = true;
+        overlayTile.turret = GetComponent<TurretBehavior>();
+    }
+
+    public void WeaponRemove(OverlayTile overlayTile)
+    {
+        overlayTile.isBlocked = false;
+        overlayTile.turret = null;
+    }
+
     private OverlayTile FindTarget()
     {
         foreach (var tile in tilesInRange)
@@ -73,6 +90,6 @@ public class TurretBehavior : MonoBehaviour
             target.shouldSlowed = slowEffect;
             turretHeat = turretCoolDown;
             
-        }        
+        }
     }
 }
