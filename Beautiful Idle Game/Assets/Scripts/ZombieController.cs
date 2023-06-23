@@ -14,9 +14,13 @@ public class ZombieController : MonoBehaviour
     private IsometricCharacterRenderer isoRenderer;
 
     [Header("Enemy Attribute")]
-    public float speed = 4.0f;
-    public float reward = 10f;
+    [SerializeField] private float speed = 4.0f;
+    [SerializeField] private float normalSpeed; // Serialized for testing now
+    [SerializeField] private float reward = 10f;
     [SerializeField] private float health = 2f;
+    [SerializeField] private float slowTime;
+    private float slowCountDown;
+
     
     private Vector2Int GetRandomKey(Dictionary<Vector2Int, OverlayTile> dict)
     {
@@ -51,13 +55,28 @@ public class ZombieController : MonoBehaviour
     {
         _pathFinder = new PathFinder();
         isoRenderer = GetComponentInChildren<IsometricCharacterRenderer>();
+        normalSpeed = speed;
+        slowCountDown = 0f;
     }
     
     // Update is called once per frame
     void Update()
     {
+        #region Slow Effect
+
+        if (slowCountDown > 0)
+        {
+            slowCountDown -= Time.deltaTime;
+        }
+        else
+        {
+            speed = normalSpeed;
+        }
+
+        #endregion
+
+        #region Pathing & Moving
         // every
-        //GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1);
         if (path.Count == 0)
         {
             // pick a random location on the map
@@ -76,10 +95,16 @@ public class ZombieController : MonoBehaviour
             MoveAlongPath();
         }
 
+        #endregion
+
+        #region Being Attacked
+
         if (currentOverlay.beingShot)
         {
-            DecreaseHealth(currentOverlay.damageOnThisTile);
+            DecreaseHealthAndSpeed(currentOverlay.damageOnThisTile, currentOverlay.shouldSlowed);
         }
+
+        #endregion
     }
 
     private void MoveAlongPath()
@@ -99,12 +124,20 @@ public class ZombieController : MonoBehaviour
         }
     }
 
-    private void DecreaseHealth(float damage)
+    private void DecreaseHealthAndSpeed(float damage, bool shouldSlowed)
     {
         health -= damage;
+        currentOverlay.damageOnThisTile -= damage;
         currentOverlay.beingShot = false;
+        if (shouldSlowed && slowCountDown <= 0)
+        {
+            speed /= 2;
+            slowCountDown = slowTime;
+            currentOverlay.shouldSlowed = false;
+        }
         StartCoroutine(TurnRed());
         
+        // Checking health status
         if (health <= 0)
         {
             path.Clear();

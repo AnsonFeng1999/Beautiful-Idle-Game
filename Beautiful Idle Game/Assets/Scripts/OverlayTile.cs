@@ -20,11 +20,18 @@ public class OverlayTile : MonoBehaviour
     public float damageOnThisTile;
     public OverlayTile previous;
     public Vector3Int gridLocation;
+    public bool shouldSlowed;
+
+    [Header("Reference")]
+    public TurretBehavior turret;
 
     // Update is called once per frame
     void Update()
     {
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        if (!enemyOn) { beingShot = false; }
+        if (!enemyOn) { 
+            beingShot = false;
+            shouldSlowed = false;
+        }
     }
 }

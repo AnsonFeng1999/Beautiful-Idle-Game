@@ -7,28 +7,30 @@ public class TurretBehavior : MonoBehaviour
     [Header("Turret Attribute")]
     public float damage;
     public int range;
-    public int level;
     public int type; // Type of turret, the same as index of the prefab list atm.
     public float price;
     public OverlayTile mountLocation;
+    
+    [SerializeField] private int level;
+    [SerializeField] private bool slowEffect;
     private List<OverlayTile> tilesInRange;
     [SerializeField] private OverlayTile target;
-    private float turretCoolDown;
+    [SerializeField] private float turretCoolDown;
+    [SerializeField] private float turretHeat;
 
     void Start()
     {
         Vector2Int mountLocaVec = new(mountLocation.gridLocation.x, mountLocation.gridLocation.y);
         tilesInRange = MapManager.Instance.GetTilesInRange(mountLocaVec, range);
-        foreach (var tile in tilesInRange) { tile.damageOnThisTile += damage; }
-        turretCoolDown = 0f;
+        turretHeat = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (turretCoolDown > 0f)
+        if (turretHeat > 0f)
         {
-            turretCoolDown -= Time.deltaTime;
+            turretHeat -= Time.deltaTime;
         }
 
         if (target)
@@ -36,9 +38,10 @@ public class TurretBehavior : MonoBehaviour
             if (!target.enemyOn)
             {
                 target.beingShot = false;
+                target.shouldSlowed = false;
                 target = null;
             }
-            else if (turretCoolDown <= 0)
+            else if (turretHeat <= 0)
             {
                 // Play firing animation if not playing
                 // face towards the tile
@@ -63,10 +66,13 @@ public class TurretBehavior : MonoBehaviour
 
     private void WeaponAttack()
     {
-        if (turretCoolDown <= 0f)
+        if (turretHeat <= 0f)
         {
+            target.damageOnThisTile += damage;
             target.beingShot = true;
-            turretCoolDown = 1f;
+            target.shouldSlowed = slowEffect;
+            turretHeat = turretCoolDown;
+            
         }        
     }
 }
