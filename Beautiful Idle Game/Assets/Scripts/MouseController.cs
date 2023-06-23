@@ -10,13 +10,12 @@ public class MouseController : MonoBehaviour
 {
     [Header("Reference")]
     public GameObject cursor;
-    public OverlayTile overlayTile;
-    private MapManager mapManager;
-    private WeaponBuildManager weaponBuildManager;
+    [SerializeField] public OverlayTile overlayTile;
+    [SerializeField] private MapManager mapManager;
+    [SerializeField] private WeaponBuildManager weaponBuildManager;
 
     [Header("Building Management")]
-    public bool isMounting;
-    public bool isRemoving;
+    public Boolean isMounting;
     public int towerIndex;
 
     void Start()
@@ -40,7 +39,7 @@ public class MouseController : MonoBehaviour
             
             if (isMounting)
             {
-                TurretRangeShow(overlayTile, towerIndex, 1, true);
+                TurretRangeShow(overlayTile, towerIndex, 1);
             }
             
             if (isMounting && Input.GetMouseButtonDown(0))
@@ -53,26 +52,11 @@ public class MouseController : MonoBehaviour
 
             #region Hovering
             
-            if (overlayTile.turret && !isRemoving)
+            if (overlayTile.turret)
             {
-                TurretRangeShow(overlayTile, overlayTile.turret.type, 1, true);
+                TurretRangeShow(overlayTile, overlayTile.turret.type, 1);
             }
-
-            #endregion
-
-            #region Removing
-
-            if (overlayTile.turret && isRemoving)
-            {
-                TurretRangeShow(overlayTile, overlayTile.turret.type, 1, false);
-            }
-
-            if (isRemoving && overlayTile.turret && Input.GetMouseButtonDown(0))
-            {
-                weaponBuildManager.RemoveWeapons(overlayTile);
-                isRemoving = false;
-            }
-
+            
             #endregion
         }
     }
@@ -95,27 +79,19 @@ public class MouseController : MonoBehaviour
         return null;
     }
 
-    private void TurretRangeShow(OverlayTile overlayTile, int towerIndex, float alpha, bool normal)
+    private void TurretRangeShow(OverlayTile overlayTile, int towerIndex, float alpha)
     {
         var currentTurret = weaponBuildManager.weaponPrefabs[towerIndex].GetComponent<TurretBehavior>();
         Vector2Int currGrid = new(overlayTile.gridLocation.x, overlayTile.gridLocation.y);
-        float rgbValue = normal? 1f : 0.2f;
         foreach (OverlayTile tile in mapManager.GetTilesInRange(currGrid, currentTurret.range))
         {
-            tile.GetComponent<SpriteRenderer>().color = new Color(1, rgbValue, rgbValue, alpha);
+            tile.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, alpha);
         }
     }
 
     public void SetIsMountingAndIndex(int _index)
     {
         isMounting = true;
-        isRemoving = false;
         towerIndex = _index;
-    }
-
-    public void SetIsRemoving()
-    {
-        isRemoving = true;
-        isMounting = false;
     }
 }
