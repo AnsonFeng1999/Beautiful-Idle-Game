@@ -40,10 +40,18 @@ public class MouseController : MonoBehaviour
             
             if (isMounting)
             {
-                TurretRangeShow(overlayTile, towerIndex, 1, true);
+                if (overlayTile.turret)
+                {
+                    Debug.Log("Can't build here");
+                    TurretRangeShow(overlayTile, towerIndex, 1, false);
+                }
+                else
+                {
+                    TurretRangeShow(overlayTile, towerIndex, 1, true);
+                }
             }
             
-            if (isMounting && Input.GetMouseButtonDown(0))
+            if (isMounting && Input.GetMouseButtonDown(0) && !overlayTile.turret)
             {
                 weaponBuildManager.MountWeapons(towerIndex, overlayTile);
                 isMounting = false;
@@ -53,7 +61,7 @@ public class MouseController : MonoBehaviour
 
             #region Hovering
             
-            if (overlayTile.turret && !isRemoving)
+            if (overlayTile.turret && !isRemoving && !isMounting)
             {
                 TurretRangeShow(overlayTile, overlayTile.turret.type, 1, true);
             }
