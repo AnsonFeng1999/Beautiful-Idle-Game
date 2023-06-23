@@ -62,6 +62,8 @@ public class ZombieController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        #region Slow Effect
+
         if (slowCountDown > 0)
         {
             slowCountDown -= Time.deltaTime;
@@ -70,6 +72,8 @@ public class ZombieController : MonoBehaviour
         {
             speed = normalSpeed;
         }
+
+        #endregion
 
         #region Pathing & Moving
         // every
@@ -133,6 +137,7 @@ public class ZombieController : MonoBehaviour
         }
         StartCoroutine(TurnRed());
         
+        // Checking health status
         if (health <= 0)
         {
             path.Clear();
