@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
-
+    public GameObject ZombieContainer;
     public GameObject ZombiePrefab;
     public float currency;
 
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
             // randomly spawn a zombie for each tile with
             if (Random.value <= 0.05f)
             {
-                var zombie = Instantiate(ZombiePrefab);
+                var zombie = Instantiate(ZombiePrefab, ZombieContainer.transform);
                 var controller = zombie.GetComponent<ZombieController>();
                 var tile = pair.Value.GetComponent<OverlayTile>();
                 controller.PositionCharacter(tile, true);

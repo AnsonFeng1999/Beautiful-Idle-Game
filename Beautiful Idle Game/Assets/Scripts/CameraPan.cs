@@ -10,8 +10,6 @@ public class CameraPan : MonoBehaviour
     {
         // Calculate the pan direction based on user input or mouse position
         Vector3 panDirection = GetPanDirection();
-        Debug.Log("Screen Width : " + Screen.width);
-        Debug.Log("Screen Height : " + Screen.height);
         // Pan the camera
         PanCamera(panDirection);
     }

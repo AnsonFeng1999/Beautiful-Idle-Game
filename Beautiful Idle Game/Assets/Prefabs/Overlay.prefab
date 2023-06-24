@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3579547232606346633}
   - component: {fileID: 6591620205149651369}
   - component: {fileID: 5734802765955680085}
+  - component: {fileID: 3950094865916168428}
   - component: {fileID: 3378523079074695119}
   m_Layer: 0
   m_Name: Overlay
@@ -115,6 +116,27 @@ PolygonCollider2D:
       - {x: -0.5, y: 0}
       - {x: 0, y: -0.25}
       - {x: 0.5, y: 0}
+--- !u!50 &3950094865916168428
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2125076564594034116}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &3378523079074695119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,3 +149,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db89494aca2a37947a9b112e612a60da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  G: 0
+  H: 0
+  isBlocked: 0
+  enemyOn: 0
+  beingShot: 0
+  damageOnThisTile: 0
+  previous: {fileID: 0}
+  gridLocation: {x: 0, y: 0, z: 0}
+  shouldSlowed: 0
+  turret: {fileID: 0}

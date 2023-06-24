@@ -33,6 +33,10 @@ public class MouseController : MonoBehaviour
         if (hit.HasValue)
         {
             overlayTile = hit.Value.collider.gameObject.GetComponent<OverlayTile>();
+            
+            if (!overlayTile)
+                return;
+            
             cursor.transform.position = overlayTile.transform.position;
             cursor.GetComponent<SpriteRenderer>().sortingOrder = overlayTile.GetComponent<SpriteRenderer>().sortingOrder;
             
