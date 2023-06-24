@@ -1,30 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class CameraPan : MonoBehaviour
 {
-    public float panSpeed = 10f;   // The speed at which the camera pans
-    public float panBorder = 10f;  // The border size at the edges of the screen for panning
-    public Tilemap map;
-    private float screenWidth;     // The width of the screen in pixels
-    private float screenHeight;    // The height of the screen in pixels
-    private Bounds tilemapBounds;   // The bounds of the tilemap
-
-    private void Start()
-    {
-        screenWidth = Screen.width;
-        screenHeight = Screen.height;
-        // Calculate the bounds of the tilemap
-        tilemapBounds = map.localBounds;
-    }
+    public float panSpeed; // The speed at which the camera pans
+    public float panBorder;  // The border size at the edges of the screen for panning
+    public Bounds cameraBounds;   // The bounds of the tilemap
 
     private void Update()
     {
         // Calculate the pan direction based on user input or mouse position
         Vector3 panDirection = GetPanDirection();
-
+        Debug.Log("Screen Width : " + Screen.width);
+        Debug.Log("Screen Height : " + Screen.height);
         // Pan the camera
         PanCamera(panDirection);
     }
@@ -35,16 +22,15 @@ public class CameraPan : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 keyboardDirection = new Vector3(horizontalInput, verticalInput, 0f);
-
         // Get the direction from mouse position
         Vector3 mousePosition = Input.mousePosition;
         Vector3 mouseDirection = Vector3.zero;
-
+        
         if (mousePosition.x < panBorder)
         {
             mouseDirection.x = -1;
         }
-        else if (mousePosition.x > screenWidth - panBorder)
+        else if (mousePosition.x >  Screen.width - panBorder)
         {
             mouseDirection.x = 1;
         }
@@ -53,7 +39,7 @@ public class CameraPan : MonoBehaviour
         {
             mouseDirection.y = -1;
         }
-        else if (mousePosition.y > screenHeight - panBorder)
+        else if (mousePosition.y > Screen.height - panBorder)
         {
             mouseDirection.y = 1;
         }
@@ -71,11 +57,19 @@ public class CameraPan : MonoBehaviour
         Vector3 newPosition = transform.position + panAmount;
 
         // Clamp the camera position within the tilemap bounds
-        float clampedX = Mathf.Clamp(newPosition.x, tilemapBounds.min.x, tilemapBounds.max.x);
-        float clampedY = Mathf.Clamp(newPosition.y, tilemapBounds.min.y, tilemapBounds.max.y);
+        float clampedX = Mathf.Clamp(newPosition.x, cameraBounds.min.x, cameraBounds.max.x);
+        float clampedY = Mathf.Clamp(newPosition.y, cameraBounds.min.y, cameraBounds.max.y);
         newPosition = new Vector3(clampedX, clampedY, newPosition.z);
 
         // Apply the pan amount to the camera's position
         transform.position = newPosition;
     }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(cameraBounds.center, cameraBounds.size);
+    }
+    
+    
 }

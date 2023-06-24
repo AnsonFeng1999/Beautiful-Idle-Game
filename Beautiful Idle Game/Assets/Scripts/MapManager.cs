@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,15 @@ public class MapManager : MonoBehaviour
 {
     private static MapManager _instance;
     public static MapManager Instance { get { return _instance; } }
-
     public GameObject overlayPrefab;
     public GameObject overlayContainer;
-    
-
+    public int mapSizeXMin = -10;
+    public int mapSizeXMax = 10;
+    public int mapSizeYMin = -10;
+    public int mapSizeYMax = 10;
     public Dictionary<Vector2Int, OverlayTile> map = new();
-    
+
+
     // public bool ignoreBottomTiles;
 
     private void Awake()
@@ -35,9 +38,12 @@ public class MapManager : MonoBehaviour
                 {
                     for (int x = bounds.min.x; x < bounds.max.x; x++)
                     {
+                        if (mapSizeXMin > x || x > mapSizeXMax || mapSizeYMin > y || y > mapSizeYMax) 
+                            continue;
+                        
                         if (z == 0)
                             return;
-
+            
                         var tileLocation = new Vector3Int(x, y, z);
                         var tileKey = new Vector2Int(x, y);
                         if (tileMap.HasTile(tileLocation) && !map.ContainsKey(tileKey))
@@ -139,5 +145,30 @@ public class MapManager : MonoBehaviour
             breath++;
         }
         return tileInRange;
+    }
+
+    private void OnDrawGizmos()
+    {
+        // setup map
+        var tileMap = gameObject.GetComponentInChildren<Tilemap>();
+        for (int x = mapSizeXMin; x < mapSizeXMax; x++)
+        {
+            Gizmos.color = Color.yellow;
+            var position = tileMap.CellToWorld(new Vector3Int(x, mapSizeYMin, 0));
+            Gizmos.DrawWireCube(position, Vector3.one);
+            position = tileMap.CellToWorld(new Vector3Int(x, mapSizeYMax, 0));
+            Gizmos.DrawWireCube(position, Vector3.one);
+        }
+        
+        for (int y = mapSizeYMin; y < mapSizeYMax; y++)
+        {
+            Gizmos.color = Color.yellow;
+            var position = tileMap.CellToWorld(new Vector3Int(mapSizeXMin, y, 0));
+            Gizmos.DrawWireCube(position, Vector3.one);
+            position = tileMap.CellToWorld(new Vector3Int(mapSizeXMax, y, 0));
+            Gizmos.DrawWireCube(position, Vector3.one);
+        }
+        
+        
     }
 }
