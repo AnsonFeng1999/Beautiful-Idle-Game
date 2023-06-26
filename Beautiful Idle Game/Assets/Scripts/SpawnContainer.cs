@@ -33,7 +33,7 @@ public class SpawnContainer : MonoBehaviour
             Debug.Log("rand range " + range);
             Transform randT = spawnPoints[range];
             
-            if (counting == maxZombies)
+            if (counting == maxZombies + 10)
             {
                 counting = 0;
                 zombieIndex = 1;    // Should be ++ instead of a fixed number, now for testing only
