@@ -18,6 +18,6 @@ public class MenuController : MonoBehaviour
 
     private void OnGUI()
     {
-        currencyUI.text = GameManager.Instance.currency.ToString();
+        currencyUI.text = "$" + GameManager.Instance.currency.ToString() + " / $" + GameManager.Instance.goal.ToString();
     }
 }

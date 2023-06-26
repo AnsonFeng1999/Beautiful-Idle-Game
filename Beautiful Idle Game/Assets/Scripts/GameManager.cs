@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject ZombiePrefab;
     public List<GameObject> AllZombies = new();
     public float currency;
+    public float goal;
 
     private void Awake()
     {
@@ -42,4 +43,11 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    //void Update()
+    //{
+        //if (currency == goal) {
+        //load next scene (end)
+        //}
+    //}
 }
