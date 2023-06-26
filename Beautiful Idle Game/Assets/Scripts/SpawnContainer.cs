@@ -7,9 +7,15 @@ public class SpawnContainer : MonoBehaviour
 {
     public Transform[] spawnPoints;
     public GameObject ZombieContainer;
-    public GameObject ZombiePrefab;
-    public int maxZombies = 100;
+    public GameObject[] ZombiePrefab;
+    public int maxZombies;
+    [SerializeField] private int zombieIndex;   // default to 0
+    private int counting;
     // Start is called before the first frame update
+    private void Start()
+    {
+        counting = 0;
+    }
     void Update()
     {
         if (MapManager.Instance == null)
@@ -26,7 +32,15 @@ public class SpawnContainer : MonoBehaviour
             int range = Random.Range(0, spawnPoints.Length);
             Debug.Log("rand range " + range);
             Transform randT = spawnPoints[range];
-            var zombie = Instantiate(ZombiePrefab, ZombieContainer.transform);
+            
+            if (counting == maxZombies)
+            {
+                counting = 0;
+                zombieIndex = 1;    // Should be ++ instead of a fixed number, now for testing only
+            }
+            counting++;
+
+            var zombie = Instantiate(ZombiePrefab[zombieIndex], ZombieContainer.transform);
             var controller = zombie.GetComponent<ZombieController>();
             OverlayTile tile = map.FindNearestTile(randT.position);
             controller.PositionCharacter(tile, true);
