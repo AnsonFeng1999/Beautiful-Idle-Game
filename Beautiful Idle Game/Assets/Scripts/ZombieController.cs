@@ -12,6 +12,8 @@ public class ZombieController : MonoBehaviour
     private OverlayTile _target;
     private List<OverlayTile> path = new();
     private IsometricCharacterRenderer isoRenderer;
+    private Animator _animator;
+    private bool dead = false;
 
     [Header("Enemy Attribute")]
     [SerializeField] private float speed = 4.0f;
@@ -54,6 +56,7 @@ public class ZombieController : MonoBehaviour
     void Start()
     {
         _pathFinder = new PathFinder();
+        _animator = GetComponentInChildren<Animator>();
         isoRenderer = GetComponentInChildren<IsometricCharacterRenderer>();
         normalSpeed = speed;
         slowCountDown = 0f;
@@ -62,6 +65,8 @@ public class ZombieController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (dead) return;
+     
         #region Slow Effect
 
         if (slowCountDown > 0)
@@ -74,7 +79,7 @@ public class ZombieController : MonoBehaviour
         }
 
         #endregion
-
+        
         #region Pathing & Moving
         // every
         if (path.Count == 0)
@@ -136,25 +141,46 @@ public class ZombieController : MonoBehaviour
             currentOverlay.shouldSlowed = false;
         }
         StartCoroutine(TurnRed());
-        
         // Checking health status
         if (health <= 0)
         {
-            path.Clear();
-            GameManager.Instance.currency += reward;
-            currentOverlay.enemyOn = false;
-            currentOverlay.isBlocked = false;
-            Destroy(gameObject);
+            dead = true;
+            _animator.Play("Dying");
         }
+    }
+
+    public void KillZombie()
+    {
+        path.Clear();
+        GameManager.Instance.currency += reward;
+        currentOverlay.enemyOn = false;
+        currentOverlay.isBlocked = false;
+        GameManager.Instance.AllZombies.Remove(gameObject);
+        Destroy(gameObject);
     }
 
     private IEnumerator TurnRed()
     {
-        GetComponentInChildren<SpriteRenderer>().color = new Color(1, 0.1f, 0.1f);
-        for (float i = 0.1f; i < 1f; i += 0.2f)
+        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        // Check if a SpriteRenderer component is found
+        Debug.Log("ture red");
+        if (spriteRenderer != null)
         {
-            GetComponentInChildren<SpriteRenderer>().color = new Color(1, i, i);
-            yield return new WaitForSeconds(0.1f);
+            // Get the Material assigned to the SpriteRenderer
+            Material spriteMaterial = spriteRenderer.material;
+            if (spriteMaterial.HasColor("_Color"))
+            {
+                spriteMaterial.SetColor("_Color", new Color(1, 0, 0, 1));
+                for (float i = 1.0f; i >= 0.0f; i -= 0.1f)
+                {
+                    spriteMaterial.SetColor("_Color", new Color(1, 0, 0, i));
+                    yield return new WaitForSeconds(0.05f);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("SpriteRenderer component not found!");
         }
     }
 }

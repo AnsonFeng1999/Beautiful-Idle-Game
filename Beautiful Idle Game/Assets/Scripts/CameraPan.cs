@@ -23,7 +23,6 @@ public class CameraPan : MonoBehaviour
         // Get the direction from mouse position
         Vector3 mousePosition = Input.mousePosition;
         Vector3 mouseDirection = Vector3.zero;
-        
         if (mousePosition.x < panBorder)
         {
             mouseDirection.x = -1;
@@ -41,7 +40,6 @@ public class CameraPan : MonoBehaviour
         {
             mouseDirection.y = 1;
         }
-
         // Return the combined direction
         return keyboardDirection + mouseDirection;
     }

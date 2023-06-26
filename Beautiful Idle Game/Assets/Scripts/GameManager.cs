@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get { return instance; } }
     public GameObject ZombieContainer;
     public GameObject ZombiePrefab;
+    public List<GameObject> AllZombies = new();
     public float currency;
 
     private void Awake()
@@ -31,12 +32,13 @@ public class GameManager : MonoBehaviour
         foreach (KeyValuePair<Vector2Int,OverlayTile> pair in mapKey)
         {
             // randomly spawn a zombie for each tile with
-            if (Random.value <= 0.05f)
+            if (Random.value <= 0.00f)
             {
                 var zombie = Instantiate(ZombiePrefab, ZombieContainer.transform);
                 var controller = zombie.GetComponent<ZombieController>();
                 var tile = pair.Value.GetComponent<OverlayTile>();
                 controller.PositionCharacter(tile, true);
+                AllZombies.Add(zombie);
             }
         }
     }

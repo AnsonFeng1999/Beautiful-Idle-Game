@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class IsometricCharacterRenderer : MonoBehaviour
 {
-
-    public static readonly string[] staticDirections = { "Static N", "Static NW", "Static W", "Static SW", "Static S", "Static SE", "Static E", "Static NE" };
     public static readonly string[] runDirections = {"Run N", "Run NW", "Run W", "Run SW", "Run S", "Run SE", "Run E", "Run NE"};
 
     Animator animator;
@@ -17,12 +15,8 @@ public class IsometricCharacterRenderer : MonoBehaviour
         //cache the animator component
         animator = GetComponent<Animator>();
     }
-
-
-    public void SetDirection(Vector2 direction){
-
-
-
+    
+    public void SetDirection(Vector2 direction) {
         //use the Run states by default
         string[] directionArray = null;
         //measure the magnitude of the input.
@@ -58,13 +52,7 @@ public class IsometricCharacterRenderer : MonoBehaviour
         //round it, and we have the answer!
         return Mathf.FloorToInt(stepCount);
     }
-
-
-
-
-
-
-
+    
     //this function converts a string array to a int (animator hash) array.
     public static int[] AnimatorStringArrayToHashArray(string[] animationArray)
     {

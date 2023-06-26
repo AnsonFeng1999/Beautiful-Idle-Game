@@ -19,6 +19,23 @@ public class MapManager : MonoBehaviour
 
 
     // public bool ignoreBottomTiles;
+    public OverlayTile FindNearestTile(Vector3 position)
+    {
+        OverlayTile nearestTile = null;
+        float shortestDistance = Mathf.Infinity;
+
+        foreach (var tile in map.Values)
+        {
+            float distance = Vector2.Distance(tile.transform.position, position);
+            if (distance < shortestDistance)
+            {
+                nearestTile = tile;
+                shortestDistance = distance;
+            }
+        }
+
+        return nearestTile;
+    }
 
     private void Awake()
     {
