@@ -121,6 +121,8 @@ public class ZombieController : MonoBehaviour
 
         if (currentOverlay.beingShot)
         {
+            source.clip = zombie_dying[0];
+            source.Play();
             DecreaseHealthAndSpeed(currentOverlay.damageOnThisTile, currentOverlay.shouldSlowed);
         }
 
