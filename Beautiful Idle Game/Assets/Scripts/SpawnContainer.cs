@@ -30,7 +30,6 @@ public class SpawnContainer : MonoBehaviour
         {
             // randomly choose a spawnpoint
             int range = Random.Range(0, spawnPoints.Length);
-            Debug.Log("rand range " + range);
             Transform randT = spawnPoints[range];
             
             if (counting == maxZombies + 10)

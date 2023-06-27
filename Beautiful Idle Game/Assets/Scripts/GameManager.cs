@@ -43,11 +43,4 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    //void Update()
-    //{
-        //if (currency == goal) {
-        //load next scene (end)
-        //}
-    //}
 }

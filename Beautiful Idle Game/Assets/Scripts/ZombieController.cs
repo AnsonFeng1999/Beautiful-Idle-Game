@@ -2,18 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ZombieController : MonoBehaviour
 {
     [Header("Enemy Path Behavior")]
     public OverlayTile currentOverlay;
+    public AudioClip[] zombie_groan;
+    public AudioClip[] zombie_dying;
+    
     [SerializeField]
     private PathFinder _pathFinder;
     private OverlayTile _target;
     private List<OverlayTile> path = new();
     private IsometricCharacterRenderer isoRenderer;
     private Animator _animator;
-    private bool dead = false;
+    private AudioSource source;
+    private bool dead;
 
     [Header("Enemy Attribute")]
     [SerializeField] private float speed = 4.0f;
@@ -58,6 +63,7 @@ public class ZombieController : MonoBehaviour
         _pathFinder = new PathFinder();
         _animator = GetComponentInChildren<Animator>();
         isoRenderer = GetComponentInChildren<IsometricCharacterRenderer>();
+        source = GetComponent<AudioSource>();
         normalSpeed = speed;
         slowCountDown = 0f;
     }
@@ -66,7 +72,16 @@ public class ZombieController : MonoBehaviour
     void Update()
     {
         if (dead) return;
-     
+
+        #region Music
+        if (Random.value <= 0.0001f && !source.isPlaying)
+        {
+            int range = Random.Range(0, zombie_groan.Length);
+            source.clip = zombie_groan[range];
+            source.Play();
+        }
+        #endregion
+
         #region Slow Effect
 
         if (slowCountDown > 0)
@@ -144,6 +159,9 @@ public class ZombieController : MonoBehaviour
         // Checking health status
         if (health <= 0)
         {
+            int range = Random.Range(0, zombie_dying.Length);
+            source.clip = zombie_dying[range];
+            source.Play();
             dead = true;
             _animator.Play("Dying");
         }
