@@ -21,12 +21,16 @@ public class TurretBehavior : MonoBehaviour
     [SerializeField] private float turretCoolDown;
     private float turretHeat;
     
+    /// <summary>
+    /// Awake is called when the object is instantiated.
+    /// </summary>
     private void Awake()
     {
-        //cache the animator component
+        // cache the animator component
         animator = GetComponentInChildren<Animator>();
     }
     
+    // Start is called before the first frame update
     void Start()
     {
         Vector2Int mountLocaVec = new(mountLocation.gridLocation.x, mountLocation.gridLocation.y);
@@ -66,41 +70,53 @@ public class TurretBehavior : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Set the facing direction of the turret
+    /// </summary>
+    /// <param name="direction"><c>direction</c> is a 2d vector showing direction in 2d space</param>
     public void SetDirection(Vector2 direction) {
-        //measure the magnitude of the input.
+        // measure the magnitude of the input.
         string[] directionArray = shootDirections;
         int lastDirection = DirectionToIndex(direction, 8);
-        //tell the animator to play the requested state
+        // tell the animator to play the requested state
         animator.Play(directionArray[lastDirection]);
-    } 
-    
-    //helper functions
+    }
 
-    //this function converts a Vector2 direction to an index to a slice around a circle
-    //this goes in a counter-clockwise direction.
+    // helper functions
+
+    /// <summary>
+    /// This function converts a Vector2 direction to an index to a slice around a circle. This goes in a counter-clockwise direction.
+    /// </summary>
+    /// <param name="dir"><c>dir</c> is a 2d vector showing direction in 2d space</param>
+    /// <param name="sliceCount">number of slices</param>
+    /// <returns></returns>
     public static int DirectionToIndex(Vector2 dir, int sliceCount){
-        //get the normalized direction
+        // Get the normalized direction
         Vector2 normDir = dir.normalized;
-        //calculate how many degrees one slice is
+        // Calculate how many degrees one slice is
         float step = 360f / sliceCount;
-        //calculate how many degress half a slice is.
-        //we need this to offset the pie, so that the North (UP) slice is aligned in the center
+        // Calculate how many degress half a slice is.
+        // we need this to offset the pie, so that the North (UP) slice is aligned in the center
         float halfstep = step / 2;
-        //get the angle from -180 to 180 of the direction vector relative to the Up vector.
-        //this will return the angle between dir and North.
+        // Get the angle from -180 to 180 of the direction vector relative to the Up vector.
+        // This will return the angle between dir and North.
         float angle = Vector2.SignedAngle(Vector2.up, normDir);
-        //add the halfslice offset
+        // Add the halfslice offset
         angle += halfstep;
-        //if angle is negative, then let's make it positive by adding 360 to wrap it around.
+        // If angle is negative, then let's make it positive by adding 360 to wrap it around.
         if (angle < 0){
             angle += 360;
         }
-        //calculate the amount of steps required to reach this angle
+        // Calculate the amount of steps required to reach this angle
         float stepCount = angle / step;
-        //round it, and we have the answer!
+        // Round it, and we have the answer!
         return Mathf.FloorToInt(stepCount);
     }
 
+    /// <summary>
+    /// This method helps setting up the turret when building.
+    /// </summary>
+    /// <param name="overlayTile"><c>Tile</c> the turret will be on</param>
     public void WeaponBuild(OverlayTile overlayTile)
     {
         transform.position = new Vector3(overlayTile.transform.position.x,
@@ -112,12 +128,20 @@ public class TurretBehavior : MonoBehaviour
         overlayTile.turret = GetComponent<TurretBehavior>();
     }
 
+    /// <summary>
+    /// This method remove attributes and reset them to default.
+    /// </summary>
+    /// <param name="overlayTile"><c>Tile</c> the turret is on.</param>
     public void WeaponRemove(OverlayTile overlayTile)
     {
         overlayTile.isBlocked = false;
         overlayTile.turret = null;
     }
 
+    /// <summary>
+    /// This method finds valid target in the range of the turret
+    /// </summary>
+    /// <returns>A final target tile in range; else null</returns>
     private OverlayTile FindTarget()
     {
         foreach (var tile in tilesInRange)
@@ -127,6 +151,9 @@ public class TurretBehavior : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Method <c>WeaponAttack</c> makes the turret to attack and setting cooldown.
+    /// </summary>
     private void WeaponAttack()
     {
         if (turretHeat <= 0f)
