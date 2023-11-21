@@ -9,23 +9,29 @@ using UnityEngine.Tilemaps;
 public class MouseController : MonoBehaviour
 {
     [Header("Reference")]
+
     public GameObject cursor;
     public OverlayTile overlayTile;
     private MapManager mapManager;
     private WeaponBuildManager weaponBuildManager;
 
     [Header("Building Management")]
+
     public bool isMounting;
     public bool isRemoving;
     public int towerIndex;
 
+
+    // Start is called before the first frame update
     void Start()
     {
         mapManager = MapManager.Instance;
         weaponBuildManager = GetComponent<WeaponBuildManager>();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// LateUpdate is called after updates(), and it is also called per frame
+    /// </summary>
     void LateUpdate()
     {
         RaycastHit2D? hit = GetFocusedOnTile();
@@ -44,6 +50,7 @@ public class MouseController : MonoBehaviour
             
             if (isMounting)
             {
+                // if the tile is already occupied.
                 if (overlayTile.turret)
                 {
                     Debug.Log("Can't build here");
@@ -89,6 +96,10 @@ public class MouseController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method return a raycasthit info if the ray hit something
+    /// </summary>
+    /// <returns>ray hit info if there is a hit; otherwise null</returns>
     public RaycastHit2D? GetFocusedOnTile()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -107,6 +118,13 @@ public class MouseController : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Highlight tiles in the range of the turret.
+    /// </summary>
+    /// <param name="overlayTile">The tile that turret on</param>
+    /// <param name="towerIndex">Turret type, using index so we can get the type in the array</param>
+    /// <param name="alpha">alpha value for the tile to be renderred</param>
+    /// <param name="normal">boolean to show whether it is building highlight (white) or removing highlight (red)</param>
     private void TurretRangeShow(OverlayTile overlayTile, int towerIndex, float alpha, bool normal)
     {
         var currentTurret = weaponBuildManager.weaponPrefabs[towerIndex].GetComponent<TurretBehavior>();
@@ -118,6 +136,10 @@ public class MouseController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set mounting attributes.
+    /// </summary>
+    /// <param name="_index">the type of turret</param>
     public void SetIsMountingAndIndex(int _index)
     {
         isMounting = true;
@@ -125,6 +147,9 @@ public class MouseController : MonoBehaviour
         towerIndex = _index;
     }
 
+    /// <summary>
+    /// Set Removing attributes/
+    /// </summary>
     public void SetIsRemoving()
     {
         isRemoving = true;
