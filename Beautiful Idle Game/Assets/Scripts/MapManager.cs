@@ -7,18 +7,26 @@ using UnityEngine.Tilemaps;
 
 public class MapManager : MonoBehaviour
 {
+    [Header("Overlay Tile Reference")]
+
     private static MapManager _instance;
     public static MapManager Instance { get { return _instance; } }
     public GameObject overlayPrefab;
     public GameObject overlayContainer;
+    public Dictionary<Vector2Int, OverlayTile> map = new();
+
+    [Header("Attributes")]
+
     public int mapSizeXMin = -10;
     public int mapSizeXMax = 10;
     public int mapSizeYMin = -10;
     public int mapSizeYMax = 10;
-    public Dictionary<Vector2Int, OverlayTile> map = new();
 
-
-    // public bool ignoreBottomTiles;
+    /// <summary>
+    /// Find nearest destination tile, used in A*
+    /// </summary>
+    /// <param name="position"><c>position</c> is the current starting position.</param>
+    /// <returns>A destnation tile with shortest distance.</returns>
     public OverlayTile FindNearestTile(Vector3 position)
     {
         OverlayTile nearestTile = null;
@@ -37,6 +45,9 @@ public class MapManager : MonoBehaviour
         return nearestTile;
     }
 
+    /// <summary>
+    /// Initialize the instance. It is called when the object is initialized
+    /// </summary>
     private void Awake()
     {
         if(_instance != null && _instance != this)
@@ -80,7 +91,11 @@ public class MapManager : MonoBehaviour
     }
 
 
-    // Getting tiles in 4 directions
+    /// <summary>
+    /// Getting tiles in 4 directions of <c>originTile</c>
+    /// </summary>
+    /// <param name="originTile"><c>originTile</c> is a coordinate of current tile.</param>
+    /// <returns>a list of OverlayTile Objects in 4 directions.</returns>
     public List<OverlayTile> GetSurroundingTiles(Vector2Int originTile)
     {
         var surroundingTiles = new List<OverlayTile>();
@@ -117,6 +132,13 @@ public class MapManager : MonoBehaviour
         return surroundingTiles;
     }
 
+    /// <summary>
+    /// This method utilize previous <see cref="GetSurroundingTiles(Vector2Int)"> GetSurroundingTiles </see>, and 
+    /// get the list of overlay tiles in the <c>range</c>. It works as a BFS-like.
+    /// </summary>
+    /// <param name="originTile">The starting coordinate of the tile </param>
+    /// <param name="range">The maximum range we should cover</param>
+    /// <returns>List of potential tiles in the range</returns>
     public List<OverlayTile> GetTilesInRange(Vector2Int originTile, int range)
     {
         OverlayTile originTileLocation = map[originTile];
@@ -164,6 +186,9 @@ public class MapManager : MonoBehaviour
         return tileInRange;
     }
 
+    #region Utils
+
+    // Debug methods
     private void OnDrawGizmos()
     {
         // setup map
@@ -185,7 +210,7 @@ public class MapManager : MonoBehaviour
             position = tileMap.CellToWorld(new Vector3Int(mapSizeXMax, y, 0));
             Gizmos.DrawWireCube(position, Vector3.one);
         }
-        
-        
     }
+
+    #endregion
 }
