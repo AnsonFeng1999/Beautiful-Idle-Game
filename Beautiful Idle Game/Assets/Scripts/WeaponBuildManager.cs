@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class WeaponBuildManager : MonoBehaviour
 {
+    [Header("Turret Reference")]
     public GameObject[] weaponPrefabs;
     
+    /// <summary>
+    /// This method builds the turret on the tile. It instantiates a turret object and links it with the tile.
+    /// It also updates the currency UI.
+    /// </summary>
+    /// <param name="towerIndex">Type of the turret</param>
+    /// <param name="overlayTile">Tile the turret will be on</param>
     public void MountWeapons(int towerIndex, OverlayTile overlayTile)
     {
         if (weaponPrefabs[towerIndex].GetComponent<TurretBehavior>().price > GameManager.Instance.currency)
@@ -19,6 +26,10 @@ public class WeaponBuildManager : MonoBehaviour
         GameManager.Instance.currency -= turret.GetComponent<TurretBehavior>().price;
     }
 
+    /// <summary>
+    /// This method removes and destroys the turret and update currency UI as well
+    /// </summary>
+    /// <param name="overlayTile">Tile the turret currently on</param>
     public void RemoveWeapons(OverlayTile overlayTile)
     {
         if (overlayTile.turret)
